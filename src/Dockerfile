@@ -3,14 +3,13 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["TodoAPI.csproj", ""]
-RUN dotnet restore "./TodoAPI.csproj"
+COPY ["src/TodoAPI.csproj", "src/"]
+RUN dotnet restore "src/TodoAPI.csproj"
 COPY . .
-WORKDIR "/src/."
+WORKDIR "/src/src"
 RUN dotnet build "TodoAPI.csproj" -c Release -o /app/build
 
 FROM build AS publish
