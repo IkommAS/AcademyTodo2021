@@ -8,4 +8,4 @@ services:
     ports:
       - "5000:80"
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA2}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
