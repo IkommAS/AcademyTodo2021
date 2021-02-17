@@ -119,14 +119,20 @@ export default {
 body {
   margin: 0;
   min-width: 250px;
-} /* Include the padding and border in an elements total width and height */
+} 
+
+/* Include the padding and border in an elements total width and height */
 * {
   box-sizing: border-box;
-} /* Remove margins and padding from the list */
+} 
+
+/* Remove margins and padding from the list */
 ul {
   margin: 0;
   padding: 0;
-} /* Style the list items */
+} 
+
+/* Style the list items */
 ul li {
   cursor: pointer;
   position: relative;
@@ -139,18 +145,26 @@ ul li {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-} /* Set all odd list items to a different color (zebra-stripes) */
+} 
+
+/* Set all odd list items to a different color (zebra-stripes) */
 ul li:nth-child(odd) {
   background: #f9f9f9;
-} /* Darker background-color on hover */
+} 
+
+/* Darker background-color on hover */
 ul li:hover {
   background: #ddd;
-} /* When clicked on, add a background color and strike out text */
+} 
+
+/* When clicked on, add a background color and strike out text */
 ul li.checked {
   background: #888;
   color: #fff;
   text-decoration: line-through;
-} /* Add a "checked" mark when clicked on */
+} 
+
+/* Add a "checked" mark when clicked on */
 ul li.checked::before {
   content: "";
   position: absolute;
@@ -162,7 +176,9 @@ ul li.checked::before {
   transform: rotate(45deg);
   height: 15px;
   width: 7px;
-} /* Style the close button */
+} 
+
+/* Style the close button */
 .close {
   position: absolute;
   right: 0;
@@ -172,18 +188,24 @@ ul li.checked::before {
 .close:hover {
   background-color: #f44336;
   color: white;
-} /* Style the header */
+} 
+
+/* Style the header */
 .header {
   background-color: #26a2ae;
   padding: 30px 40px;
   color: white;
   text-align: center;
-} /* Clear floats after the header */
+} 
+
+/* Clear floats after the header */
 .header:after {
   content: "";
   display: table;
   clear: both;
-} /* Style the input */
+} 
+
+/* Style the input */
 input {
   margin: 0;
   border: none;
@@ -192,7 +214,9 @@ input {
   padding: 10px;
   float: left;
   font-size: 16px;
-} /* Style the "Add" button */
+} 
+
+/* Style the "Add" button */
 .addBtn {
   padding: 10px;
   width: 25%;
