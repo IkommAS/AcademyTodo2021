@@ -17,9 +17,9 @@ namespace TodoAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Todo> GetAll()
+        public ActionResult<IEnumerable<Todo>> GetAll()
         {
-            return _todoRepo.GetAll();
+            return Ok(_todoRepo.GetAll());
         }
 
         [HttpGet("{id}")]
