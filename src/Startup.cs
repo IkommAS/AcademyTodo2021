@@ -32,6 +32,7 @@ namespace TodoAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoAPI", Version = "v1" });
             });
+            services.AddCors(c=> c.AddDefaultPolicy(p=> p.AllowAnyOrigin()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +46,7 @@ namespace TodoAPI
             }
 
             //app.UseHttpsRedirection();
-
+            app.UseCors();
             app.UseRouting();
 
             app.UseAuthorization();
