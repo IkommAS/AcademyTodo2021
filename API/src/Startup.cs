@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using TodoAPI.Models;
+using TodoAPI.Repository;
 
 namespace TodoAPI
 {
@@ -32,6 +34,10 @@ namespace TodoAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoAPI", Version = "v1" });
             });
+            services.AddCors(c => c.AddDefaultPolicy(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())) ; ;
+
+            services.AddSingleton<ITodoRepository<Todo>>(new TodoRepository());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +51,7 @@ namespace TodoAPI
             }
 
             //app.UseHttpsRedirection();
-
+            app.UseCors();
             app.UseRouting();
 
             app.UseAuthorization();
