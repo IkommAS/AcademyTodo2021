@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  nuxt-app:
+    build: .
+    container_name: academy_todo_2021_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    command: "npm run start"
