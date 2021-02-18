@@ -11,101 +11,72 @@
       <span @click="addTodo()" class="addBtn">Add</span>
     </div>
     <ul id="myUL">
-      <div :key="todo.id" v-for="todo in todos">
-        <li v-if="todo.isDone" @click="setTodoNotDone(todo)" class="checked">
+        <li v-for="todo in getTodos" :key="todo.id" :class="{ checked: todo.isDone }" @click.self="toggleTodoDone(todo)">
           {{ todo.name }}
-          <span @click="deleteTodo(todo)" class="close"
-            ><a-icon type="close-square"
-          /></span>
+          <span class="close" @click.self="deleteTodo(todo.id)">
+            <a-icon style="pointer-events: none;" type="close-square" />
+          </span>
         </li>
-        <li v-if="!todo.isDone" @click="setTodoDone(todo)">
-          {{ todo.name }}
-          <span @click="deleteTodo(todo)" class="close"
-            ><a-icon type="close-square"
-          /></span>
-        </li>
-      </div>
     </ul>
   </div>
 </template>
-
 <script>
-import axios from "axios";
-
-const baseUrl = "localhost:5000";
-
+import axios from "axios";  
+const baseUrl = "http://localhost:5000";
 export default {
   mounted() {
     this.getAllTodos();
   },
   data() {
     return {
-      todos: [
-        { id: 1, name: "some todo", isDone: false },
-        { id: 2, name: "some other todo", isDone: true }
-      ],
+      todos: [],
       todoText: ""
     };
   },
-
+  computed: {
+    getTodos() {
+      return this.todos
+    }
+  },
   methods: {
-    getAllTodos() {
-      /* axios
+    toggleTodoDone(todo){
+      todo.isDone = !todo.isDone      axios
+      .put(baseUrl + "/api/Todo/" + todo.id, todo)
+      .then(res => {
+        console.log("updated todo successfully: ", res.data);
+      })
+      .catch(err => {
+        console.log("set todo done failed: ", err);
+      });    },    getAllTodos() {
+      axios
         .get(baseUrl + "/api/Todo")
         .then(res => {
-          console.log("getAllTodosInitially: ", res);
-          this.todos = res;
+          console.log("getAllTodosInitially: ", res.data);
+          this.todos = res.data;
         })
         .catch(err => {
           console.log("getAllTodos failed: ", err);
-        }); */
-      return this.todos;
-    },
-
-    deleteTodo(id) {
+        });
+    },    deleteTodo(id) {
+      id = parseInt(id)
       axios
         .delete(baseUrl + "/api/Todo/" + id)
         .then(res => {
-          console.log("deleted todo successfully: ", res);
-          this.todos = res;
+          console.log("deleted todo successfully: ", res.data);
+          this.todos = this.todos.filter(todo => todo.id !== id)
+          console.log('todos', this.todos)
         })
         .catch(err => {
           console.log("delete todo failed: ", err);
-        });
-    },
-
-    setTodoDone(todo) {
-      todo.isDone = true
-       axios
-        .put(baseUrl + "/api/Todo/", null, todo)
-        .then(res => {
-          console.log("updated todo successfully: ", res);
-          document.getElementById(todo.id).classList.add("checked")
-        })
-        .catch(err => {
-          console.log("delete todo failed: ", err);
-        });
-    },
-
-    setTodoNotDone(todo) {
-      todo.isDone = false
-       axios
-        .put(baseUrl + "/api/Todo/", null, todo)
-        .then(res => {
-          console.log("updated todo successfully: ", res);
-          document.getElementById(todo.id).classList.remove("checked")
-        })
-        .catch(err => {
-          console.log("delete todo failed: ", err);
-        });
-    },
-
-    addTodo() {
+        });    },    addTodo() {
+      let obj = { name: this.todoText }
+      console.log('addTodo req body: ', obj)
       axios
-        .get(baseUrl + "/api/Todo")
+        .post(baseUrl + "/api/Todo", obj)
         .then(res => {
-          console.log("todo added successfully: ", res);
-          this.getAllTodos()
+          console.log("todo added successfully: ", res.data);
+          this.todos.push(res.data)
+          this.todoText = ""
         })
         .catch(err => {
           console.log("add todo failed: ", err);
@@ -114,24 +85,20 @@ export default {
   }
 };
 </script>
-
 <style>
 body {
   margin: 0;
   min-width: 250px;
 } 
-
 /* Include the padding and border in an elements total width and height */
 * {
   box-sizing: border-box;
 } 
-
 /* Remove margins and padding from the list */
 ul {
   margin: 0;
   padding: 0;
 } 
-
 /* Style the list items */
 ul li {
   cursor: pointer;
@@ -146,24 +113,20 @@ ul li {
   -ms-user-select: none;
   user-select: none;
 } 
-
 /* Set all odd list items to a different color (zebra-stripes) */
 ul li:nth-child(odd) {
-  background: #f9f9f9;
+  background: #F9F9F9;
 } 
-
 /* Darker background-color on hover */
 ul li:hover {
   background: #ddd;
 } 
-
 /* When clicked on, add a background color and strike out text */
 ul li.checked {
   background: #888;
   color: #fff;
   text-decoration: line-through;
 } 
-
 /* Add a "checked" mark when clicked on */
 ul li.checked::before {
   content: "";
@@ -177,7 +140,6 @@ ul li.checked::before {
   height: 15px;
   width: 7px;
 } 
-
 /* Style the close button */
 .close {
   position: absolute;
@@ -186,25 +148,22 @@ ul li.checked::before {
   padding: 12px 16px 12px 16px;
 }
 .close:hover {
-  background-color: #f44336;
+  background-color: #F44336;
   color: white;
 } 
-
 /* Style the header */
 .header {
-  background-color: #26a2ae;
+  background-color: #26A2AE;
   padding: 30px 40px;
   color: white;
   text-align: center;
 } 
-
 /* Clear floats after the header */
 .header:after {
   content: "";
   display: table;
   clear: both;
 } 
-
 /* Style the input */
 input {
   margin: 0;
@@ -215,12 +174,11 @@ input {
   float: left;
   font-size: 16px;
 } 
-
 /* Style the "Add" button */
 .addBtn {
   padding: 10px;
   width: 25%;
-  background: #d9d9d9;
+  background: #D9D9D9;
   color: #555;
   float: left;
   text-align: center;
