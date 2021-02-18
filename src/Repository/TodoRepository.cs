@@ -7,7 +7,7 @@ using TodoAPI.Models;
 
 namespace TodoAPI.Repository
 {
-    public class TodoRepository : ITodoRepository
+    public class TodoRepository : ITodoRepository<Todo>
     {
         private static readonly List<Todo> todos = new() { new Todo() { Id = 1, IsDone = false, Name = "Dishes" } };
 
@@ -35,7 +35,7 @@ namespace TodoAPI.Repository
             return false;
         }
 
-        public Tuple<bool, Todo> Add(Todo todo)
+        public Todo Add(Todo todo)
         {
             if (todo != null && !string.IsNullOrEmpty(todo.Name))
             {
@@ -43,14 +43,14 @@ namespace TodoAPI.Repository
                 {
                     var originTodo = todos.Where(x => x.Name == todo.Name).FirstOrDefault();
 
-                    return new Tuple<bool, Todo>(true, originTodo);
+                    return originTodo;
                 }
                 var highestId = todos.Count == 0 ? 1 : todos.Select(x => x.Id).Max();
                 todo.Id = highestId + 1;
                 todos.Add(todo);
-                return new Tuple<bool, Todo>(true, todo);
+                return todo;
             }
-            return new Tuple<bool, Todo>(false, null);
+            return null;
         }
 
         public bool Delete(int id)
@@ -63,5 +63,7 @@ namespace TodoAPI.Repository
             }
             return false;
         }
+
+      
     }
 }

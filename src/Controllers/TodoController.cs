@@ -9,9 +9,9 @@ namespace TodoAPI.Controllers
     [ApiController]
     public class TodoController : ControllerBase
     {
-        private ITodoRepository _todoRepo;
+        private ITodoRepository<Todo> _todoRepo;
 
-        public TodoController(ITodoRepository todoRepository)
+        public TodoController(ITodoRepository<Todo> todoRepository)
         {
             _todoRepo = todoRepository;
         }
@@ -33,7 +33,7 @@ namespace TodoAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult Update(int id, Todo todo)
         {
-            return _todoRepo.Update(id, todo) ? Ok() : BadRequest();
+            return _todoRepo.Update(id, todo) ? NoContent() : BadRequest();
         }
 
         [HttpPost]
@@ -41,9 +41,9 @@ namespace TodoAPI.Controllers
         {
             var result = _todoRepo.Add(todo);
 
-            if (result.Item1)
+            if (result != null)
             {
-                return CreatedAtAction(nameof(Get), new { id = result.Item2.Id }, result.Item2);
+                return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
             }
 
             return BadRequest();
@@ -54,9 +54,7 @@ namespace TodoAPI.Controllers
         {
             var isDeleted = _todoRepo.Delete(id);
 
-            return isDeleted ? Ok() : NotFound();
+            return isDeleted ? NoContent() : NotFound();
         }
     }
-
-
 }

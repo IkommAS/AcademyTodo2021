@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using TodoAPI.Models;
 using TodoAPI.Repository;
 
 namespace TodoAPI
@@ -35,7 +36,7 @@ namespace TodoAPI
             });
             services.AddCors(c => c.AddDefaultPolicy(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())) ; ;
 
-            services.AddSingleton<ITodoRepository>(new TodoRepository());
+            services.AddSingleton<ITodoRepository<Todo>>(new TodoRepository());
 
         }
 

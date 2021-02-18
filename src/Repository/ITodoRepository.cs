@@ -4,12 +4,12 @@ using TodoAPI.Models;
 
 namespace TodoAPI.Repository
 {
-    public interface ITodoRepository
+    public interface ITodoRepository<T> where T : Todo
     {
-        Tuple<bool, Todo> Add(Todo todo);
+        T Add(T todo);
         bool Delete(int id);
-        IEnumerable<Todo> GetAll();
-        Todo GetById(int id);
-        bool Update(int id, Todo todo);
+        IEnumerable<T> GetAll();
+        T GetById(int id);
+        bool Update(int id, T todo);
     }
 }
