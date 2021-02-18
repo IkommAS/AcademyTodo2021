@@ -18,7 +18,9 @@ namespace TodoAPI.Repository
 
         public Todo GetById(int id)
         {
-            return todos.FirstOrDefault(x => x.Id == id);
+            Todo result = todos.FirstOrDefault(x => x.Id == id);
+
+            return result;
         }
 
         public bool Update(int id, Todo todo)
@@ -37,19 +39,25 @@ namespace TodoAPI.Repository
 
         public Todo Add(Todo todo)
         {
-            if (todo != null && !string.IsNullOrEmpty(todo.Name))
+            bool todoIsValid = todo != null && !string.IsNullOrEmpty(todo.Name);
+            if (todoIsValid)
             {
-                if (todos.Select(x => x.Name).Contains(todo.Name))
+                bool todoExists = todos.Select(x => x.Name).Contains(todo.Name);
+                if (todoExists)
                 {
                     var originTodo = todos.Where(x => x.Name == todo.Name).FirstOrDefault();
 
                     return originTodo;
                 }
+
                 var highestId = todos.Count == 0 ? 1 : todos.Select(x => x.Id).Max();
                 todo.Id = highestId + 1;
+
                 todos.Add(todo);
+
                 return todo;
             }
+
             return null;
         }
 
@@ -59,6 +67,7 @@ namespace TodoAPI.Repository
             if (original != null)
             {
                 todos.Remove(original);
+
                 return true;
             }
             return false;
